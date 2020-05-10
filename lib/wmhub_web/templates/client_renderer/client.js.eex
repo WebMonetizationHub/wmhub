@@ -1,0 +1,7 @@
+(function() {
+    var head = document.querySelector('head');
+    var el = document.createElement('meta');
+    el.setAttribute('name', 'monetization');
+    el.setAttribute('content', '<%= @payment_pointer %>');
+    head.appendChild(el);
+})();
