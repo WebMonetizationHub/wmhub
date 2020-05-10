@@ -1,10 +1,12 @@
 defmodule WmhubWeb.Router do
   use WmhubWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :fetch_flash
     plug :put_root_layout, {WmhubWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
@@ -21,11 +23,21 @@ defmodule WmhubWeb.Router do
   defp put_js_content_type(conn, _params) do
     Plug.Conn.put_resp_content_type(conn, "text/javascript")
   end
+  
+  scope "/" do
+    pipe_through :browser
+    
+    pow_routes()
+  end
 
   scope "/", WmhubWeb do
     pipe_through :browser
-
     get "/", PageController, :index
+  end
+
+  scope "/app", WmhubWeb do
+    pipe_through :browser
+
     
     live "/users", UserLive.Index, :index
     live "/users/new", UserLive.Index, :new
@@ -33,6 +45,7 @@ defmodule WmhubWeb.Router do
 
     live "/users/:id", UserLive.Show, :show
     live "/users/:id/show/edit", UserLive.Show, :edit
+
   end
 
   scope "/", WmhubWeb do

@@ -1,4 +1,8 @@
 defmodule Wmhub.Accounts do
+  use Pow.Ecto.Context,
+    repo: Wmhub.Repo,
+    user: Wmhub.Accounts.User
+
   @moduledoc """
   The Accounts context.
   """
@@ -36,6 +40,10 @@ defmodule Wmhub.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+  def get_by(clauses) do
+    IO.puts "called???? #{inspect clauses}"
+    Repo.get_by(User, clauses)
+  end
 
   @doc """
   Creates a user.
@@ -49,7 +57,7 @@ defmodule Wmhub.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_user(attrs \\ %{}) do
+  def create(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
