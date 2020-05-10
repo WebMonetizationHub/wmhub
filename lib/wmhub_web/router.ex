@@ -38,7 +38,7 @@ defmodule WmhubWeb.Router do
   scope "/", WmhubWeb do
     pipe_through :js
 
-    get "/:token/wmhub.js", ClientRendererController, :index
+    get "/wmhub.js", ClientRendererController, :index
   end
 
   # Other scopes may use custom stacks.
