@@ -12,6 +12,16 @@ defmodule WmhubWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :require_authenticated do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+    plug :live_view_current_user
+  end
+
+  defp live_view_current_user(conn, _params) do
+    put_session(conn, :current_user, conn.assigns.current_user)
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -36,20 +46,18 @@ defmodule WmhubWeb.Router do
   end
 
   scope "/app", WmhubWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated]
 
-    
-    live "/users", UserLive.Index, :index
-    live "/users/new", UserLive.Index, :new
-    live "/users/:id/edit", UserLive.Index, :edit
+    live "/projects", ProjectLive.Index, :index
+    live "/projects/new", ProjectLive.Index, :new
+    live "/projects/:id/edit", ProjectLive.Index, :edit
 
-    live "/users/:id", UserLive.Show, :show
-    live "/users/:id/show/edit", UserLive.Show, :edit
-
+    live "/projects/:id", ProjectLive.Show, :show
+    live "/projects/:id/show/edit", ProjectLive.Show, :edit
   end
 
   scope "/", WmhubWeb do
-    pipe_through :js
+    pipe_through [:browser, :js]
 
     get "/wmhub.js", ClientRendererController, :index
   end
