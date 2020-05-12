@@ -27,6 +27,7 @@ defmodule WmhubWeb.Router do
   end
 
   pipeline :js do
+    plug :put_secure_browser_headers
     plug :put_js_content_type
   end
 
@@ -57,7 +58,7 @@ defmodule WmhubWeb.Router do
   end
 
   scope "/", WmhubWeb do
-    pipe_through [:browser, :js]
+    pipe_through :js
 
     get "/wmhub.js", ClientRendererController, :index
   end
