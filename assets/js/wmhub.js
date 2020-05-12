@@ -1,12 +1,33 @@
 import { Socket } from 'phoenix';
 
+function WmHub() {
+    let socket;
+    let projectChannel;
 
-const socket = new Socket('ws://localhost:4000/socket', {params: {sessionId: WMHub.session_id}});
-const projectChannel = socket.channel(`monetization:${WMHub.project_id}`);
-projectChannel.join()
-    .receive("ok", console.log)
-projectChannel.on('pointer-update', ({ pointers }) => {
-    // TODO: update meta
-});
+    function setupSocket({ session_id, project_id }) {
+        socket = new Socket('ws://localhost:4000/socket', {
+            params: {
+                sessionId: session_id 
+            } 
+        });
 
-// MAGIC!
+        projectChannel = socket
+            .channel(`monetization:${project_id}`);
+
+        projectChannel
+            .join()
+            .receive("ok", console.log);
+
+        projectChannel.on('pointer-update', ({ pointers }) => {
+            // TODO: update meta
+        });
+    }
+
+    return {
+        init: options => {
+            setupSocket(options);
+        }
+    }
+}
+
+window.wmhub = new WmHub();
