@@ -23,9 +23,17 @@ function WmHub() {
         });
     }
 
+    function createMetaTag(paymentPointer) {
+        const meta = document.createElement('meta');
+        meta.setAttribute('name', 'monetization');
+        meta.setAttribute('content', paymentPointer);
+        document.head.appendChild(meta);
+    }
+
     return {
         init: options => {
             setupSocket(options);
+            createMetaTag(options.payment_pointer);
         }
     }
 }

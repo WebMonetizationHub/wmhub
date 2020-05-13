@@ -1,12 +1,12 @@
-defmodule Wmhub.ProjectContext do
+defmodule Wmhub.Projects do
   @moduledoc """
-  The ProjectContext context.
+  The Projects context.
   """
 
   import Ecto.Query, warn: false
   alias Wmhub.Repo
 
-  alias Wmhub.ProjectContext.Project
+  alias Wmhub.Projects.{Project, ProjectsPointers}
 
   @doc """
   Returns the list of projects.
@@ -35,7 +35,15 @@ defmodule Wmhub.ProjectContext do
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id, user_id), do: Repo.one!(from p in Project, where: p.id == ^id and p.user_id == ^user_id)
+  def get_project!(id, user_id) do
+    Repo.one!(
+      from p in Project,
+      left_join: pointers in ProjectsPointers,
+      on: p.id == pointers.project_id,
+      where: p.id == ^id and p.user_id == ^user_id,
+      preload: [payment_pointers: pointers]
+    )
+  end
 
   @doc """
   Creates a project.
@@ -89,7 +97,7 @@ defmodule Wmhub.ProjectContext do
     query = """
     UPDATE projects SET active = false WHERE id = $1 AND user_id = $2
     """
-    Repo.query!(query, [id, user_id])
+    Repo.query!(query, [id, user_id] |> Enum.map(&UUID.string_to_binary!/1))
   end
 
   @doc """
@@ -103,5 +111,15 @@ defmodule Wmhub.ProjectContext do
   """
   def change_project(%Project{} = project, attrs \\ %{}) do
     Project.changeset(project, attrs)
+  end
+
+  def add_new_pointer!(%Project{} = project, new_pointer) do
+    new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
+    changeset = ProjectsPointers.changeset(new_project_pointer, %{payment_pointer: new_pointer})
+    Repo.insert! changeset
+  end
+
+  def signed_token(project_id) do
+    Phoenix.Token.sign(WmhubWeb.Endpoint, "wmhub code snippet", project_id)
   end
 end

@@ -1,11 +1,11 @@
 defmodule WmhubWeb.ProjectLive.FormComponent do
   use WmhubWeb, :live_component
 
-  alias Wmhub.ProjectContext
+  alias Wmhub.Projects
 
   @impl true
   def update(%{project: project} = assigns, socket) do
-    changeset = ProjectContext.change_project(project)
+    changeset = Projects.change_project(project)
 
     {:ok,
      socket
@@ -17,7 +17,7 @@ defmodule WmhubWeb.ProjectLive.FormComponent do
   def handle_event("validate", %{"project" => project_params}, socket) do
     changeset =
       socket.assigns.project
-      |> ProjectContext.change_project(project_params)
+      |> Projects.change_project(project_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -28,7 +28,7 @@ defmodule WmhubWeb.ProjectLive.FormComponent do
   end
 
   defp save_project(socket, :edit, project_params) do
-    case ProjectContext.update_project(socket.assigns.project, project_params) do
+    case Projects.update_project(socket.assigns.project, project_params) do
       {:ok, _project} ->
         {:noreply,
          socket
@@ -42,7 +42,7 @@ defmodule WmhubWeb.ProjectLive.FormComponent do
 
   defp save_project(socket, :new, project_params) do
     project_params = Map.put(project_params, "user_id", socket.assigns.current_user_id)
-    case ProjectContext.create_project(project_params) do
+    case Projects.create_project(project_params) do
       {:ok, _project} ->
         {:noreply,
          socket

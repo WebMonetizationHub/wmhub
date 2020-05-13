@@ -1,3 +1,2 @@
 <h1>Oh Haaaaai</h1>
-<%= @current_user.name %>
-<%= link "Logout", to: Routes.pow_session_path(@conn, :delete), method: :delete %>
+<%= link "Login", to: Routes.pow_session_path(@conn, :new) %>

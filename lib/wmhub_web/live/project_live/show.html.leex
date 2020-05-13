@@ -26,7 +26,15 @@
     <%= @project.url %>
   </li>
 
+
 </ul>
+  <%= live_component @socket, WmhubWeb.ProjectLive.PaymentPointersComponent,
+    id: "payment_pointers:#{@project.id}",
+    project: @project %>
+
+  <pre><code>
+  <%= Phoenix.View.render_to_string(WmhubWeb.SnippetView, "snippet.js", project_code_assigns(@project)) %>
+  </pre></code>
 
 <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>
 <span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index) %></span>
