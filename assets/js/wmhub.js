@@ -33,7 +33,7 @@ function WmHub() {
     return {
         init: options => {
             setupSocket(options);
-            createMetaTag(options.payment_pointer);
+            createMetaTag(options.payment_pointers[0]);
         }
     }
 }
