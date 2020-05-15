@@ -23,6 +23,12 @@ defmodule WmhubWeb.ProjectLive.Show do
     {:noreply, assign(socket, :project, get_project(socket.assigns.project.id, socket.assigns.current_user.id))}
   end
 
+  @impl true
+  def handle_info({:update_pointer, edited_pointer_info}, socket) do
+    Projects.edit_pointer!(edited_pointer_info.project_pointer_id, edited_pointer_info.pointer_value)
+    {:noreply, assign(socket, :project, get_project(socket.assigns.project.id, socket.assigns.current_user.id))}
+  end
+
   defp get_project(project_id, user_id) do
     Projects.get_project!(project_id, user_id)
   end

@@ -116,7 +116,13 @@ defmodule Wmhub.Projects do
   def add_new_pointer!(%Project{} = project, new_pointer) do
     new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
     changeset = ProjectsPointers.changeset(new_project_pointer, %{payment_pointer: new_pointer})
-    Repo.insert! changeset
+    Repo.insert!(changeset)
+  end
+
+  def edit_pointer!(project_pointer_id, new_pointer_value) do
+    project_pointer = Repo.get!(ProjectsPointers, project_pointer_id)
+    changeset = ProjectsPointers.changeset(project_pointer, %{payment_pointer: new_pointer_value})
+    Repo.update!(changeset)
   end
 
   def signed_token(project_id) do

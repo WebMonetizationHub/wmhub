@@ -55,7 +55,10 @@ defmodule WmhubWeb.Router do
 
     live "/projects/:id", ProjectLive.Show, :show
     live "/projects/:id/show/edit", ProjectLive.Show, :edit
+
+    live "/", DashboardLive.Index, :index
   end
+
 
   scope "/", WmhubWeb do
     pipe_through :js
