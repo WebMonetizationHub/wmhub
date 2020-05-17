@@ -1,5 +1,3 @@
-<h1>Show Project</h1>
-
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, WmhubWeb.ProjectLive.FormComponent,
     id: @project.id,
@@ -9,32 +7,38 @@
     return_to: Routes.project_show_path(@socket, :show, @project) %>
 <% end %>
 
-<ul>
+<div class="row">
+  <div class="col sm12">
+    <h4 class="header"><%= @project.name %></h2>
+    <h5 class="header"><%= @project.description %></h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h5>Payment Pointer</h4>
+    <%= live_component @socket, WmhubWeb.ProjectLive.PaymentPointersComponent,
+      id: "payment_pointers:#{@project.id}",
+      project: @project %>
+  </div>
+</div>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @project.name %>
-  </li>
+<div class="row">
+  <div class="col">
+    <strong>Copy this snippet to your page!</strong>
+    <div style="padding: 0 5px; border: 1px solid">
+    <pre><code>
+    <%= Phoenix.View.render_to_string(WmhubWeb.SnippetView, "snippet.js", project_code_assigns(@project)) %>
+    </pre></code>
+    </div>
+  </div>
+</div>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @project.description %>
-  </li>
-
-  <li>
-    <strong>Url:</strong>
-    <%= @project.url %>
-  </li>
+  <div class="row">
+    <span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "btn" %></span>
+    <%= live_redirect to: Routes.project_index_path(@socket, :index), class: "btn grey" do %>
+      <i class="material-icons">arrow_back</i>
+    <% end %>
+  </div>
+</div>
 
 
-</ul>
-  <%= live_component @socket, WmhubWeb.ProjectLive.PaymentPointersComponent,
-    id: "payment_pointers:#{@project.id}",
-    project: @project %>
-
-  <pre><code>
-  <%= Phoenix.View.render_to_string(WmhubWeb.SnippetView, "snippet.js", project_code_assigns(@project)) %>
-  </pre></code>
-
-<span><%= live_patch "Edit", to: Routes.project_show_path(@socket, :edit, @project), class: "button" %></span>
-<span><%= live_redirect "Back", to: Routes.project_index_path(@socket, :index) %></span>

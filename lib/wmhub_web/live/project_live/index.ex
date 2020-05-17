@@ -6,9 +6,11 @@ defmodule WmhubWeb.ProjectLive.Index do
 
   @impl true
   def mount(_params, %{"current_user" => current_user}, socket) do
-    socket = socket
-    |> assign(:current_user, current_user)
-    |> assign(:projects, fetch_projects(current_user.id))
+    socket =
+      socket
+      |> assign(:current_user, current_user)
+      |> assign(:projects, fetch_projects(current_user.id))
+
     {:ok, socket}
   end
 

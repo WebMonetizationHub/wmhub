@@ -6,7 +6,11 @@ defmodule WmhubWeb.UserLiveTest do
   alias Wmhub.Accounts
 
   @create_attrs %{email: "some email", name: "some name", password: "some password"}
-  @update_attrs %{email: "some updated email", name: "some updated name", password: "some updated password"}
+  @update_attrs %{
+    email: "some updated email",
+    name: "some updated name",
+    password: "some updated password"
+  }
   @invalid_attrs %{email: nil, name: nil, password: nil}
 
   defp fixture(:user) do
@@ -33,7 +37,7 @@ defmodule WmhubWeb.UserLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.user_index_path(conn, :index))
 
       assert index_live |> element("a", "New User") |> render_click() =~
-        "New User"
+               "New User"
 
       assert_patch(index_live, Routes.user_index_path(conn, :new))
 
@@ -55,7 +59,7 @@ defmodule WmhubWeb.UserLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.user_index_path(conn, :index))
 
       assert index_live |> element("#user-#{user.id} a", "Edit") |> render_click() =~
-        "Edit User"
+               "Edit User"
 
       assert_patch(index_live, Routes.user_index_path(conn, :edit, user))
 
@@ -95,7 +99,7 @@ defmodule WmhubWeb.UserLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.user_show_path(conn, :show, user))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-        "Edit User"
+               "Edit User"
 
       assert_patch(show_live, Routes.user_show_path(conn, :edit, user))
 

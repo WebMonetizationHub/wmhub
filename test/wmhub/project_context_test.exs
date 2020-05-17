@@ -7,7 +7,11 @@ defmodule Wmhub.ProjectContextTest do
     alias Wmhub.ProjectContext.Project
 
     @valid_attrs %{description: "some description", name: "some name", url: "some url"}
-    @update_attrs %{description: "some updated description", name: "some updated name", url: "some updated url"}
+    @update_attrs %{
+      description: "some updated description",
+      name: "some updated name",
+      url: "some updated url"
+    }
     @invalid_attrs %{description: nil, name: nil, url: nil}
 
     def project_fixture(attrs \\ %{}) do

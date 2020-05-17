@@ -11,6 +11,5 @@ defmodule Wmhub.Repo.Migrations.CreateProjects do
 
       timestamps()
     end
-
   end
 end

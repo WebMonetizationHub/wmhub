@@ -15,6 +15,7 @@ defmodule WmhubWeb.Router do
   pipeline :require_authenticated do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: Pow.Phoenix.PlugErrorHandler
+
     plug :live_view_current_user
   end
 
@@ -34,10 +35,10 @@ defmodule WmhubWeb.Router do
   defp put_js_content_type(conn, _params) do
     Plug.Conn.put_resp_content_type(conn, "text/javascript")
   end
-  
+
   scope "/" do
     pipe_through :browser
-    
+
     pow_routes()
   end
 
@@ -59,7 +60,6 @@ defmodule WmhubWeb.Router do
 
     live "/", DashboardLive.Index, :index
   end
-
 
   scope "/", WmhubWeb do
     pipe_through :js

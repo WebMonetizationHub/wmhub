@@ -1,7 +1,7 @@
 defmodule WmhubWeb.PageController do
-    use WmhubWeb, :controller
+  use WmhubWeb, :controller
 
-    def index(conn, _params) do
-        render(conn, "page.html")
-    end
+  def index(conn, _params) do
+    render(conn, "page.html")
+  end
 end

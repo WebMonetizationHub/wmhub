@@ -1,4 +1,3 @@
-<h1>Listing Projects</h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, WmhubWeb.ProjectLive.FormComponent,
@@ -10,31 +9,38 @@
     return_to: Routes.project_index_path(@socket, :index) %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Url</th>
+<%= if Enum.count(@projects) == 0 do %>
+  <div class="row center">
+    <h5 class="header">You have no projects. Start a new one!</h5>
+  </div>
+<% end %>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="projects">
-    <%= for project <- @projects do %>
-      <tr id="project-<%= project.id %>">
-        <td><%= project.name %></td>
-        <td><%= project.description %></td>
-        <td><%= project.url %></td>
+<%= for project <- @projects do %>
+  <div id="project-<%= project.id %>">
+    <div class="col s6">
+      <div class="card grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title"><%= project.name %></span>
+          <p><%= project.description %></p>
+        </div>
+        <div class="card-action">
+          <%= live_redirect to: Routes.project_show_path(@socket, :show, project) do %>
+            <i class="material-icons">zoom_in</i>
+          <% end %>
+          <%= live_patch to: Routes.project_index_path(@socket, :edit, project) do %>
+            <i class="material-icons">edit</i>
+          <% end %>
+          <%= link to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure you want to delete this project?"] do %>
+            <i class="material-icons">delete</i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 
-        <td>
-          <span><%= live_redirect "Show", to: Routes.project_show_path(@socket, :show, project) %></span>
-          <span><%= live_patch "Edit", to: Routes.project_index_path(@socket, :edit, project) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: project.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<span><%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %></span>
+<%= live_patch to: Routes.project_index_path(@socket, :new) do %>
+  <div class="fixed-action-btn btn-floating btn-large">
+    <i class="material-icons">add</i>
+  </div>
+<% end %>

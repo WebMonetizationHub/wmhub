@@ -39,10 +39,10 @@ defmodule Wmhub.Projects do
   def get_project!(id, user_id) do
     Repo.one!(
       from p in Project,
-      left_join: pointers in ProjectsPointers,
-      on: p.id == pointers.project_id,
-      where: p.id == ^id and p.user_id == ^user_id,
-      preload: [payment_pointers: pointers]
+        left_join: pointers in ProjectsPointers,
+        on: p.id == pointers.project_id,
+        where: p.id == ^id and p.user_id == ^user_id,
+        preload: [payment_pointers: pointers]
     )
   end
 
@@ -98,7 +98,8 @@ defmodule Wmhub.Projects do
     query = """
     UPDATE projects SET active = false WHERE id = $1 AND user_id = $2
     """
-    Repo.query!(query, [id, user_id] |> Enum.map(&UUID.string_to_binary!/1))
+
+    Repo.query(query, [id, user_id] |> Enum.map(&UUID.string_to_binary!/1))
   end
 
   @doc """
@@ -114,12 +115,22 @@ defmodule Wmhub.Projects do
     Project.changeset(project, attrs)
   end
 
-  def add_new_pointer!(%Project{} = project, new_pointer) do
+  def add_new_pointer(%Project{payment_pointers: []} = project, new_pointer) do
     new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
     changeset = ProjectsPointers.changeset(new_project_pointer, %{payment_pointer: new_pointer})
-    Repo.insert!(changeset)
-    project_pointers = Repo.all(get_pointer_list_query(new_project_pointer.project_id))
-    broadcast_pointers!({:pointer_update, new_project_pointer.project_id, project_pointers})
+
+    case Repo.insert(changeset) do
+      {:ok, _project_pointer} ->
+        project_pointers = Repo.all(get_pointer_list_query(new_project_pointer.project_id))
+        broadcast_pointers({:pointer_update, new_project_pointer.project_id, project_pointers})
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def add_new_pointer(%Project{}, _new_pointer) do
+    {:error, :multiple_pointers}
   end
 
   def edit_pointer!(project_pointer_id, new_pointer_value) do
@@ -127,21 +138,22 @@ defmodule Wmhub.Projects do
     changeset = ProjectsPointers.changeset(project_pointer, %{payment_pointer: new_pointer_value})
     Repo.update!(changeset)
     project_pointers = Repo.all(get_pointer_list_query(project_pointer.project_id))
-    broadcast_pointers!({:pointer_update, project_pointer.project_id, project_pointers})
+    :ok = broadcast_pointers({:pointer_update, project_pointer.project_id, project_pointers})
   end
 
-  defp broadcast_pointers!({:pointer_update, project_id, project_pointers}) do
+  defp broadcast_pointers({:pointer_update, project_id, project_pointers}) do
     Pointers.broadcast_update!(
       project_id,
-      Enum.map(project_pointers, fn project_pointer -> %{pointer: project_pointer.payment_pointer} end)
+      Enum.map(project_pointers, & &1.payment_pointer)
     )
   end
 
   defp get_pointer_list_query(project_id) do
-      from(p in Project,
-        join: pointers in ProjectsPointers,
-        on: p.id == pointers.project_id,
-        select: pointers,
-        where: p.id == ^project_id)
+    from(p in Project,
+      join: pointers in ProjectsPointers,
+      on: p.id == pointers.project_id,
+      select: pointers,
+      where: p.id == ^project_id
+    )
   end
 end

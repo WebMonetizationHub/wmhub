@@ -40,8 +40,9 @@ defmodule Wmhub.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
   def get_by(clauses) do
-    IO.puts "called???? #{inspect clauses}"
+    IO.puts("called???? #{inspect(clauses)}")
     Repo.get_by(User, clauses)
   end
 

@@ -19,5 +19,4 @@ defmodule Wmhub.Accounts.User do
     |> validate_required([:name, :email])
     |> pow_changeset(attrs)
   end
-
 end

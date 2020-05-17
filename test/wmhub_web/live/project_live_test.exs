@@ -6,7 +6,11 @@ defmodule WmhubWeb.ProjectLiveTest do
   alias Wmhub.ProjectContext
 
   @create_attrs %{description: "some description", name: "some name", url: "some url"}
-  @update_attrs %{description: "some updated description", name: "some updated name", url: "some updated url"}
+  @update_attrs %{
+    description: "some updated description",
+    name: "some updated name",
+    url: "some updated url"
+  }
   @invalid_attrs %{description: nil, name: nil, url: nil}
 
   defp fixture(:project) do
@@ -33,7 +37,7 @@ defmodule WmhubWeb.ProjectLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.project_index_path(conn, :index))
 
       assert index_live |> element("a", "New Project") |> render_click() =~
-        "New Project"
+               "New Project"
 
       assert_patch(index_live, Routes.project_index_path(conn, :new))
 
@@ -55,7 +59,7 @@ defmodule WmhubWeb.ProjectLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.project_index_path(conn, :index))
 
       assert index_live |> element("#project-#{project.id} a", "Edit") |> render_click() =~
-        "Edit Project"
+               "Edit Project"
 
       assert_patch(index_live, Routes.project_index_path(conn, :edit, project))
 
@@ -95,7 +99,7 @@ defmodule WmhubWeb.ProjectLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.project_show_path(conn, :show, project))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-        "Edit Project"
+               "Edit Project"
 
       assert_patch(show_live, Routes.project_show_path(conn, :edit, project))
 

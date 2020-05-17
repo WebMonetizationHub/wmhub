@@ -19,18 +19,43 @@ defmodule WmhubWeb.ProjectLive.Show do
 
   @impl true
   def handle_info({:new_pointer, new_pointer}, socket) do
-    Projects.add_new_pointer!(socket.assigns.project, new_pointer)
-    {:noreply, assign(socket, :project, get_project(socket.assigns.project.id, socket.assigns.current_user.id))}
+    case Projects.add_new_pointer(socket.assigns.project, new_pointer) do
+      :ok ->
+        {:noreply, assign_get_project(socket)}
+
+      {:error, :multiple_pointers} ->
+        {:noreply, put_flash(socket, :error, "Cannot have multiple pointers!")}
+
+      _ ->
+        {:noreply, socket}
+    end
   end
 
   @impl true
   def handle_info({:update_pointer, edited_pointer_info}, socket) do
-    Projects.edit_pointer!(edited_pointer_info.project_pointer_id, edited_pointer_info.pointer_value)
-    {:noreply, assign(socket, :project, get_project(socket.assigns.project.id, socket.assigns.current_user.id))}
+    Projects.edit_pointer!(
+      edited_pointer_info.project_pointer_id,
+      edited_pointer_info.pointer_value
+    )
+
+    {:noreply,
+     assign(
+       socket,
+       :project,
+       get_project(socket.assigns.project.id, socket.assigns.current_user.id)
+     )}
   end
 
   defp get_project(project_id, user_id) do
     Projects.get_project!(project_id, user_id)
+  end
+
+  defp assign_get_project(socket) do
+    assign(
+      socket,
+      :project,
+      get_project(socket.assigns.project.id, socket.assigns.current_user.id)
+    )
   end
 
   defp page_title(:show), do: "Show Project"
@@ -40,7 +65,10 @@ defmodule WmhubWeb.ProjectLive.Show do
     [
       project_id: project_id,
       wmhub_js_file: "http://localhost:4000/js/wmhub.js",
-      payment_pointers: Enum.map(payment_pointers, fn %ProjectsPointers{payment_pointer: payment_pointer} -> payment_pointer  end)
+      payment_pointers:
+        Enum.map(payment_pointers, fn %ProjectsPointers{payment_pointer: payment_pointer} ->
+          payment_pointer
+        end)
     ]
   end
 end

@@ -11,6 +11,7 @@ defmodule Wmhub.Projects.Project do
     field :name, :string
     field :url, :string
     field :active, :boolean, default: true
+
     belongs_to :user, User, type: :binary_id
     has_many :payment_pointers, ProjectsPointers
 

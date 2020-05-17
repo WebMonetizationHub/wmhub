@@ -1,3 +1,3 @@
 defmodule WmhubWeb.PageView do
-    use WmhubWeb, :view
+  use WmhubWeb, :view
 end

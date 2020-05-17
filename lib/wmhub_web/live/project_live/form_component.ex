@@ -42,6 +42,7 @@ defmodule WmhubWeb.ProjectLive.FormComponent do
 
   defp save_project(socket, :new, project_params) do
     project_params = Map.put(project_params, "user_id", socket.assigns.current_user_id)
+
     case Projects.create_project(project_params) do
       {:ok, _project} ->
         {:noreply,
