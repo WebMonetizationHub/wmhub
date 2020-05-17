@@ -38,8 +38,8 @@ defmodule WmhubWeb.ProjectLive.Show do
 
   defp project_code_assigns(%Project{id: project_id, payment_pointers: payment_pointers}) do
     [
-      project_id: Wmhub.Projects.signed_token(project_id),
-      wmhub_js_file: "http://localhost:4000/wmhub.js",
+      project_id: project_id,
+      wmhub_js_file: "http://localhost:4000/js/wmhub.js",
       payment_pointers: Enum.map(payment_pointers, fn %ProjectsPointers{payment_pointer: payment_pointer} -> payment_pointer  end)
     ]
   end

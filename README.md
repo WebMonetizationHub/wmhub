@@ -84,3 +84,7 @@ As soon as people start streaming payments, you can follow-up in your project's 
 ### Show your work
 
 We are a hub, so with your permission, people will discover your project! Tag it and enjoy the distribution.
+
+
+- Broadcast da lista de ponteiros quando for adicionado um novo ponteiro
+- Broadcast da lista de ponteiros quando um ponteiro for editado

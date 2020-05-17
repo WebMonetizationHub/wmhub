@@ -7,6 +7,7 @@ defmodule Wmhub.Projects do
   alias Wmhub.Repo
 
   alias Wmhub.Projects.{Project, ProjectsPointers}
+  alias Wmhub.Pointers
 
   @doc """
   Returns the list of projects.
@@ -117,15 +118,30 @@ defmodule Wmhub.Projects do
     new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
     changeset = ProjectsPointers.changeset(new_project_pointer, %{payment_pointer: new_pointer})
     Repo.insert!(changeset)
+    project_pointers = Repo.all(get_pointer_list_query(new_project_pointer.project_id))
+    broadcast_pointers!({:pointer_update, new_project_pointer.project_id, project_pointers})
   end
 
   def edit_pointer!(project_pointer_id, new_pointer_value) do
     project_pointer = Repo.get!(ProjectsPointers, project_pointer_id)
     changeset = ProjectsPointers.changeset(project_pointer, %{payment_pointer: new_pointer_value})
     Repo.update!(changeset)
+    project_pointers = Repo.all(get_pointer_list_query(project_pointer.project_id))
+    broadcast_pointers!({:pointer_update, project_pointer.project_id, project_pointers})
   end
 
-  def signed_token(project_id) do
-    Phoenix.Token.sign(WmhubWeb.Endpoint, "wmhub code snippet", project_id)
+  defp broadcast_pointers!({:pointer_update, project_id, project_pointers}) do
+    Pointers.broadcast_update!(
+      project_id,
+      Enum.map(project_pointers, fn project_pointer -> %{pointer: project_pointer.payment_pointer} end)
+    )
+  end
+
+  defp get_pointer_list_query(project_id) do
+      from(p in Project,
+        join: pointers in ProjectsPointers,
+        on: p.id == pointers.project_id,
+        select: pointers,
+        where: p.id == ^project_id)
   end
 end

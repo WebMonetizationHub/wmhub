@@ -5,11 +5,13 @@ function WmHub() {
     let projectChannel;
 
     function setupSocket({ session_id, project_id }) {
-        socket = new Socket('ws://localhost:4000/socket', {
+        socket = new Socket('ws://localhost:4000/monetization', {
             params: {
                 sessionId: session_id 
-            } 
+            }
         });
+
+        socket.connect();
 
         projectChannel = socket
             .channel(`monetization:${project_id}`);
@@ -19,7 +21,7 @@ function WmHub() {
             .receive("ok", console.log);
 
         projectChannel.on('pointer-update', ({ pointers }) => {
-            // TODO: update meta
+            console.log('pointers>>>', pointers);
         });
     }
 

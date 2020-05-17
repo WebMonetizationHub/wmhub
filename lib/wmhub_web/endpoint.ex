@@ -10,7 +10,7 @@ defmodule WmhubWeb.Endpoint do
     signing_salt: "SpXaIpNv"
   ]
 
-  socket "/socket", WmhubWeb.UserSocket,
+  socket "/monetization", WmhubWeb.MonetizationSocket,
     websocket: true,
     longpoll: false
 

@@ -43,6 +43,7 @@ defmodule WmhubWeb.Router do
 
   scope "/", WmhubWeb do
     pipe_through :browser
+
     get "/", PageController, :index
   end
 
@@ -65,11 +66,6 @@ defmodule WmhubWeb.Router do
 
     get "/wmhub.js", SnippetController, :index
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", WmhubWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
