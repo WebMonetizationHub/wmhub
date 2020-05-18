@@ -36,7 +36,7 @@ defmodule Wmhub.Projects do
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id, user_id) do
+  def get_project_for_user!(id, user_id) do
     Repo.one!(
       from p in Project,
         left_join: pointers in ProjectsPointers,
@@ -44,6 +44,10 @@ defmodule Wmhub.Projects do
         where: p.id == ^id and p.user_id == ^user_id,
         preload: [payment_pointers: pointers]
     )
+  end
+
+  def get_project!(id) do
+    Repo.get!(Project, id)
   end
 
   @doc """

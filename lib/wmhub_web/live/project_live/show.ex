@@ -47,7 +47,7 @@ defmodule WmhubWeb.ProjectLive.Show do
   end
 
   defp get_project(project_id, user_id) do
-    Projects.get_project!(project_id, user_id)
+    Projects.get_project_for_user!(project_id, user_id)
   end
 
   defp assign_get_project(socket) do

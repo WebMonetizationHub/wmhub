@@ -48,6 +48,12 @@ defmodule WmhubWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api", WmhubWeb do
+    pipe_through :api
+
+    get "/projects/:id", ProjectController, :index
+  end
+
   scope "/app", WmhubWeb do
     pipe_through [:browser, :require_authenticated]
 
