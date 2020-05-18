@@ -3,7 +3,7 @@ defmodule WmhubWeb.SnippetView do
 
   def get_script_options(assigns) do
     assigns
-    |> Map.take([:payment_pointers, :project_id])
-    |> Jason.encode!()
+    |> Map.take([:project_id])
+    |> Phoenix.json_library().encode!()
   end
 end

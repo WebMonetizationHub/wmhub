@@ -2,7 +2,7 @@ defmodule WmhubWeb.ProjectLive.Show do
   use WmhubWeb, :live_view
 
   alias Wmhub.Projects
-  alias Wmhub.Projects.{Project, ProjectsPointers}
+  alias Wmhub.Projects.Project
 
   @impl true
   def mount(_params, %{"current_user" => current_user}, socket) do
@@ -61,14 +61,10 @@ defmodule WmhubWeb.ProjectLive.Show do
   defp page_title(:show), do: "Show Project"
   defp page_title(:edit), do: "Edit Project"
 
-  defp project_code_assigns(%Project{id: project_id, payment_pointers: payment_pointers}) do
+  defp project_code_assigns(%Project{id: project_id}) do
     [
       project_id: project_id,
-      wmhub_js_file: "http://localhost:4000/js/wmhub.js",
-      payment_pointers:
-        Enum.map(payment_pointers, fn %ProjectsPointers{payment_pointer: payment_pointer} ->
-          payment_pointer
-        end)
+      wmhub_js_file: Routes.static_url(WmhubWeb.Endpoint, "/js/wmhub.js")
     ]
   end
 end

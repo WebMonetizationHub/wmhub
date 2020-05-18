@@ -46,9 +46,13 @@ function WmHub() {
     function setupChannel({ project_id }, socket) {
         const channel = socket.channel(`monetization:${project_id}`);
 
-        channel.join().receive("error", response => {
-            throw new Error(`Failed to join project channel. Socket details: ${JSON.stringify(response)}`);
-        });
+        channel.join()
+            .receive("ok", ({ pointers: [paymentPointer]}) => {
+                metatagReference = setupMetaTag(paymentPointer);
+            })
+            .receive("error", response => {
+                throw new Error(`Failed to join project channel. Socket details: ${JSON.stringify(response)}`);
+            });
 
         return channel;
     }
@@ -61,7 +65,9 @@ function WmHub() {
     function subscribePointerEvents(channel) {
         channel.on('pointer-update', ({ pointers: [paymentPointer] }) => {
             if (metatagReference && paymentPointer) {
-                metatagReference.setAttribute('content', paymentPointer.pointer);
+                metatagReference.setAttribute('content', paymentPointer);
+            } else {
+                metatagReference = setupMetaTag(paymentPointer);
             }
         });
     }
@@ -69,9 +75,9 @@ function WmHub() {
     /**
      * Creates the web moetization tag on page.
      * 
-     * @param {ProjectOptions} options
+     * @param {string} paymentPointer
      */
-    function setupMetaTag({ payment_pointers: [paymentPointer] }) {
+    function setupMetaTag(paymentPointer) {
         const meta = document.createElement('meta');
         meta.setAttribute('name', 'monetization');
         meta.setAttribute('content', paymentPointer);
@@ -90,7 +96,6 @@ function WmHub() {
         init: options => {
             try {
                 socketReference = setupSocket();
-                metatagReference = setupMetaTag(options);
                 projectChannelReference = setupChannel(options, socketReference);
 
                 subscribePointerEvents(projectChannelReference);
