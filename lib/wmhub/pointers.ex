@@ -2,10 +2,10 @@ defmodule Wmhub.Pointers do
   import Ecto.Query, warn: false
   alias Phoenix.PubSub
   alias Wmhub.PubSub, as: PubSubServer
-  alias Wmhub.Projects.ProjectsPointers
+  alias Wmhub.Projects.Pointer
   alias Wmhub.Repo
 
-  @topic "pointers:"
+  @topic "pointers"
 
   defp update_topic(project_id) do
     "#{@topic}:#{project_id}:update"
@@ -20,6 +20,6 @@ defmodule Wmhub.Pointers do
   end
 
   def pointers_for(project_id) do
-    Repo.all(from p in ProjectsPointers, where: p.project_id == ^project_id, select: p.payment_pointer)
+    Repo.all(from p in Pointer, where: p.project_id == ^project_id, select: p.payment_pointer)
   end
 end

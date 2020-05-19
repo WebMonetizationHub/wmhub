@@ -22,7 +22,7 @@ defmodule WmhubWeb.ProjectLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Project")
-    |> assign(:project, Projects.get_project!(id, socket.assigns.current_user.id))
+    |> assign(:project, Projects.get_project_for_user!(id, socket.assigns.current_user.id))
   end
 
   defp apply_action(socket, :new, _params) do

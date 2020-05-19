@@ -6,8 +6,9 @@ defmodule Wmhub.Projects do
   import Ecto.Query, warn: false
   alias Wmhub.Repo
 
-  alias Wmhub.Projects.{Project, ProjectsPointers}
+  alias Wmhub.Projects.{Project, Pointer, Payment}
   alias Wmhub.Pointers
+  alias Wmhub.Payments
 
   @doc """
   Returns the list of projects.
@@ -39,7 +40,7 @@ defmodule Wmhub.Projects do
   def get_project_for_user!(id, user_id) do
     Repo.one!(
       from p in Project,
-        left_join: pointers in ProjectsPointers,
+        left_join: pointers in Pointer,
         on: p.id == pointers.project_id,
         where: p.id == ^id and p.user_id == ^user_id,
         preload: [payment_pointers: pointers]
@@ -121,7 +122,7 @@ defmodule Wmhub.Projects do
 
   def add_new_pointer(%Project{payment_pointers: []} = project, new_pointer) do
     new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
-    changeset = ProjectsPointers.changeset(new_project_pointer, %{payment_pointer: new_pointer})
+    changeset = Pointer.changeset(new_project_pointer, %{payment_pointer: new_pointer})
 
     case Repo.insert(changeset) do
       {:ok, _project_pointer} ->
@@ -138,8 +139,8 @@ defmodule Wmhub.Projects do
   end
 
   def edit_pointer!(project_pointer_id, new_pointer_value) do
-    project_pointer = Repo.get!(ProjectsPointers, project_pointer_id)
-    changeset = ProjectsPointers.changeset(project_pointer, %{payment_pointer: new_pointer_value})
+    project_pointer = Repo.get!(Pointer, project_pointer_id)
+    changeset = Pointer.changeset(project_pointer, %{payment_pointer: new_pointer_value})
     Repo.update!(changeset)
     project_pointers = Repo.all(get_pointer_list_query(project_pointer.project_id))
     :ok = broadcast_pointers({:pointer_update, project_pointer.project_id, project_pointers})
@@ -154,7 +155,7 @@ defmodule Wmhub.Projects do
 
   defp get_pointer_list_query(project_id) do
     from(p in Project,
-      join: pointers in ProjectsPointers,
+      join: pointers in Pointer,
       on: p.id == pointers.project_id,
       select: pointers,
       where: p.id == ^project_id

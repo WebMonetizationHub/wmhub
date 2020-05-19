@@ -1,10 +1,6 @@
-defmodule Wmhub.Projects.ProjectsPointers do
-  use Ecto.Schema
-  import Ecto.Changeset
+defmodule Wmhub.Projects.Pointer do
+  use Wmhub.Schema
   alias Wmhub.Projects.Project
-
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
 
   schema "projects_pointers" do
     field :payment_pointer, :string

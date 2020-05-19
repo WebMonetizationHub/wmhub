@@ -1,5 +1,5 @@
 alias Wmhub.Projects
-alias Wmhub.Projects.{Project, ProjectsPointers}
+alias Wmhub.Projects.{Project, Pointer, Payment}
 alias Wmhub.Accounts
 alias Wmhub.Accounts.User
 

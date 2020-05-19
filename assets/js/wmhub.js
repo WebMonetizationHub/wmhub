@@ -73,6 +73,29 @@ function WmHub() {
     }
 
     /**
+     * Streams monetization events
+     * 
+     * @param {Channel} channel
+     */
+    function setupMonetizationListeners(channel) {
+        if (!document.monetization) {
+            return channel.push('not_monetized', {});
+        }
+        document.monetization.addEventListener('monetizationpending', event => {
+            channel.push('monetization_pending', { details: event.detail });
+        });
+        document.monetization.addEventListener('monetizationstart', event => {
+            channel.push('monetization_started', { details: event.detail });
+        });
+        document.monetization.addEventListener('monetizationstop', event => {
+            channel.push('monetization_stopped', { details: event.detail });
+        });
+        document.monetization.addEventListener('monetizationprogress', event => {
+            channel.push('monetization_progress', { details: event.detail });
+        });
+    }
+
+    /**
      * Creates the web moetization tag on page.
      * 
      * @param {string} paymentPointer
@@ -99,6 +122,7 @@ function WmHub() {
                 projectChannelReference = setupChannel(options, socketReference);
 
                 subscribePointerEvents(projectChannelReference);
+                setupMonetizationListeners(projectChannelReference);
             }
             catch (e) {
                 console.error(e);

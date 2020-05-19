@@ -1,7 +1,7 @@
 defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
   use WmhubWeb, :live_component
 
-  alias Wmhub.Projects.ProjectsPointers
+  alias Wmhub.Projects.Pointer
 
   def initial_assigns(socket) do
     socket
@@ -26,7 +26,7 @@ defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
     """
   end
 
-  def pointer_partial(:initial, %ProjectsPointers{id: id, payment_pointer: pointer}, assigns) do
+  def pointer_partial(:initial, %Pointer{id: id, payment_pointer: pointer}, assigns) do
     ~L"""
     <li class="collection-item" phx-click="start-edit-pointer" phx-value-project-pointer-id="<%= id %>" phx-target="<%= @myself %>">
       <span><%= pointer %></span> <i class="material-icons">edit</i> 
@@ -36,7 +36,7 @@ defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
 
   def pointer_partial(
         :editing,
-        %ProjectsPointers{id: id},
+        %Pointer{id: id},
         %{edited_pointer: %{id: id, pointer_value: pointer}} = assigns
       ) do
     ~L"""
@@ -50,7 +50,7 @@ defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
     """
   end
 
-  def pointer_partial(:editing, %ProjectsPointers{payment_pointer: pointer}, assigns) do
+  def pointer_partial(:editing, %Pointer{payment_pointer: pointer}, assigns) do
     ~L"""
     <li><%= pointer %></li>
     """
@@ -74,7 +74,6 @@ defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
     </form>
     """
   end
-
 
   def adding_new_pointer_assigns(socket) do
     socket
@@ -118,7 +117,7 @@ defmodule WmhubWeb.ProjectLive.PaymentPointersComponent do
   end
 
   def handle_event("start-edit-pointer", %{"project-pointer-id" => project_pointer_id}, socket) do
-    %ProjectsPointers{id: id, payment_pointer: pointer_value} =
+    %Pointer{id: id, payment_pointer: pointer_value} =
       Enum.find(socket.assigns.project.payment_pointers, &(&1.id == project_pointer_id))
 
     {:noreply, editing_pointer_assigns(socket, %{id: id, pointer_value: pointer_value})}

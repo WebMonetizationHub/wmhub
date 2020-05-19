@@ -1,10 +1,8 @@
 defmodule Wmhub.Projects.Project do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Wmhub.Schema
+  
   alias Wmhub.Accounts.User
-  alias Wmhub.Projects.ProjectsPointers
-
-  @primary_key {:id, :binary_id, autogenerate: true}
+  alias Wmhub.Projects.Pointer
 
   schema "projects" do
     field :description, :string
@@ -13,7 +11,7 @@ defmodule Wmhub.Projects.Project do
     field :active, :boolean, default: true
 
     belongs_to :user, User, type: :binary_id
-    has_many :payment_pointers, ProjectsPointers
+    has_many :payment_pointers, Pointer
 
     timestamps()
   end
