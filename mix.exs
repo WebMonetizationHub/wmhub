@@ -10,7 +10,12 @@ defmodule Wmhub.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      docs: [
+        extras: [
+          "README.md",
+        ] ++ Path.wildcard("docs/*.md")
+      ]
     ]
   end
 
@@ -48,7 +53,8 @@ defmodule Wmhub.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:uuid, "~> 1.1"},
-      {:pow, "~> 1.0.20"}
+      {:pow, "~> 1.0.20"},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 
