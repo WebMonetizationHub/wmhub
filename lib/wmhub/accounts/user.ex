@@ -1,4 +1,9 @@
 defmodule Wmhub.Accounts.User do
+  @moduledoc """
+  Describes a user of the system.
+  Users can create projects and see dashboards. Mainly, they represent
+  WMHub's paying customers.
+  """
   use Wmhub.Schema
   use Pow.Ecto.Schema
 

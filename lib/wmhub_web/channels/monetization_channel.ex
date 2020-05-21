@@ -54,6 +54,7 @@ defmodule WmhubWeb.MonetizationChannel do
       request_id: request_id
     }
     send(self(), :save_stream)
+    :telemetry.execute([:wmhub, :payment, :received], %{count: 1}, %{request_id: request_id, payment_pointer: payment_pointer})
     {:noreply, assign(socket, :payment_stream, payment_stream)}
   end
 

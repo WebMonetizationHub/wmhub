@@ -17,7 +17,7 @@ defmodule WmhubWeb.DashboardLive.Index do
     """
   end
 
-  def format_float(0, opts), do: 0
+  def format_float(0, _opts), do: 0
   def format_float(f, opts), do: :erlang.float_to_binary(f, opts)
 
   def handle_info({:new_payment, payment}, socket) do

@@ -1,11 +1,10 @@
 defmodule Wmhub.Accounts do
+  @moduledoc """
+  The Accounts context deals with signin/signup and everything related with `Wmhub.Accounts.User`s.
+  """
   use Pow.Ecto.Context,
     repo: Wmhub.Repo,
     user: Wmhub.Accounts.User
-
-  @moduledoc """
-  The Accounts context.
-  """
 
   import Ecto.Query, warn: false
   alias Wmhub.Repo

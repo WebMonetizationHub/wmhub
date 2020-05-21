@@ -34,6 +34,8 @@ defmodule WmhubWeb.Telemetry do
       summary("wmhub.repo.query.query_time", unit: {:native, :millisecond}),
       summary("wmhub.repo.query.queue_time", unit: {:native, :millisecond}),
       summary("wmhub.repo.query.idle_time", unit: {:native, :millisecond}),
+      counter("wmhub.payment.received.count", tags: [:payment_pointer]),
+      counter("wmhub.payment.received.count", tags: [:request_id]),
 
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),

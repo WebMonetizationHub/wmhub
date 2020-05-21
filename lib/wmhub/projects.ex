@@ -6,9 +6,8 @@ defmodule Wmhub.Projects do
   import Ecto.Query, warn: false
   alias Wmhub.Repo
 
-  alias Wmhub.Projects.{Project, Pointer, Payment}
+  alias Wmhub.Projects.{Project, Pointer}
   alias Wmhub.Pointers
-  alias Wmhub.Payments
 
   @doc """
   Returns the list of projects.
@@ -120,6 +119,10 @@ defmodule Wmhub.Projects do
     Project.changeset(project, attrs)
   end
 
+  @doc """
+  Adds a new pointer to a `Wmhub.Projects.Project`. Only one pointer is allowed
+  for a given Project.
+  """
   def add_new_pointer(%Project{payment_pointers: []} = project, new_pointer) do
     new_project_pointer = Ecto.build_assoc(project, :payment_pointers)
     changeset = Pointer.changeset(new_project_pointer, %{payment_pointer: new_pointer})
@@ -138,6 +141,9 @@ defmodule Wmhub.Projects do
     {:error, :multiple_pointers}
   end
 
+  @doc """
+  Edits a Pointer for a Project.
+  """
   def edit_pointer!(project_pointer_id, new_pointer_value) do
     project_pointer = Repo.get!(Pointer, project_pointer_id)
     changeset = Pointer.changeset(project_pointer, %{payment_pointer: new_pointer_value})
