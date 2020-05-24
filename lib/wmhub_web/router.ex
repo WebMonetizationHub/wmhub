@@ -45,7 +45,7 @@ defmodule WmhubWeb.Router do
   scope "/", WmhubWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", LandingPageController, :index
   end
 
   scope "/api", WmhubWeb do
