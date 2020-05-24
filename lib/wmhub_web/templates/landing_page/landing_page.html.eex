@@ -1,117 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>WMHUB</title>
-
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-</head>
-<body>
-  <nav class="black" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">WMHUB</a>
-      <ul class="right hide-on-med-and-down">
+<nav class="black" role="navigation">
+  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">WMHUB</a>
+    <ul class="right hide-on-med-and-down">
+      <li>
         <%= link "Login", to: Routes.pow_session_path(@conn, :new) %>
-      </ul>
+      </li>
+      <li>
+        <%= link "Signup", to: Routes.pow_registration_path(@conn, :new) %>
+      </li>
+    </ul>
 
-      <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-    </div>
-  </nav>
-  <div class="section no-pad-bot" id="index-banner">
-    <div class="container">
-      <br><br>
-      <h1 class="header center  green-text">WMHUB</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div>
-      <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light  green accent-4">Get Started</a>
-      </div>
-      <br><br>
-
-    </div>
+    <ul id="nav-mobile" class="sidenav">
+      <li><a href="#">Navbar Link</a></li>
+    </ul>
+    <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   </div>
-
-
+</nav>
+<div class="section no-pad-bot" id="index-banner">
   <div class="container">
- <div class="section">
-
-      <!--   Icon Section   -->
-      <div class="row">
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Speeds up development</h5>
-
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-          </div>
-        </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">User Experience Focused</h5>
-
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-          </div>
-        </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center">Easy to work with</h5>
-
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
-          </div>
-        </div>
-      </div>
-
+    <br><br>
+    <h1 class="header center  green-text">WMHub</h1>
+    <div class="row center">
+      <h5 class="header col s12 light">Configure Web Monetization like Google Analytics!</h5>
+    </div>
+    <div class="row center">
+      <%= link "Get Started", to: Routes.dashboard_index_path(@conn, :index), class: "btn-large waves-effect waves-light green accent-4" %>
     </div>
     <br><br>
+
   </div>
+</div>
 
-  <footer class="page-footer grey darken-4">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+<div class="container">
+  <div class="section">
 
+    <!--   Icon Section   -->
+    <div class="row">
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+          <h5 class="center">Automatic Web Monetization</h5>
 
+          <p class="light">All you need to do is drop our snippet in your page and boom: instant Web Monetization. No need to write custom HTML/JS!</p>
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
+      </div>
+
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+          <h5 class="center">Focus on your content</h5>
+
+          <p class="light">
+            You want to write content, or do you want to write JavaScript to plumb your users to Web Monetization? Focus on what is important to you: engaging with your user base. We handle the rest:
+            managing your payment pointers, setting them up on your page views, showing/hiding content based on web monetized users.
+          </p>
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
+      </div>
+
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+          <h5 class="center">Easy to work with</h5>
+
+          <p class="light">
+            A simple interface to all things Web Monetization related.
+            Show messages to paying users, unlock content as soon as payment streams are started, all without writing a single line of JavaScript or HTML!
+          </p>
         </div>
       </div>
     </div>
-    <div class="footer-copyright">
 
+  </div>
+  <br><br>
+</div>
+
+<footer class="page-footer grey darken-4">
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <h5 class="white-text">About us</h5>
+        <p class="grey-text text-lighten-4">
+          We develop real-time experiences on the web, ranging from simple applications to continent-sized user bases.
+        </p>
+
+
+      </div>
+      <div class="col l3 s12">
+        <h5 class="white-text">Contact</h5>
+        <ul>
+          <li><a class="" href="mailto:bl.panuto@gmail.com">Drop us an e-mail!</a></li>
+        </ul>
+      </div>
     </div>
-  </footer>
+  </div>
+  <div class="footer-copyright">
 
-
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
-  </body>
-</html>
+  </div>
+</footer>
