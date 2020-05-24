@@ -49,8 +49,7 @@ defmodule Wmhub.Payments do
         PubSub.broadcast!(PubSubServer, new_payment_topic_for(user_id), {:new_payment, payment})
     end
 
-    # TODO: fix, not working
-    # ** (Postgrex.Error) ERROR 42803 (grouping_error) column "p0.id" must appear in the GROUP BY clause or be used in an aggregate function
+    # FIXME: ** (Postgrex.Error) ERROR 42803 (grouping_error) column "p0.id" must appear in the GROUP BY clause or be used in an aggregate function
     @doc false
     def payments_for(user_id) do
         query = payment_query()

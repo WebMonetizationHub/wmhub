@@ -10,8 +10,6 @@ defmodule WmhubWeb.Telemetry do
   def init(_arg) do
     children = [
       {:telemetry_poller, measurements: periodic_measurements(), period: 10_000}
-      # Add reporters as children of your supervision tree.
-      # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
@@ -28,7 +26,6 @@ defmodule WmhubWeb.Telemetry do
         unit: {:native, :millisecond}
       ),
 
-      # Database Metrics
       summary("wmhub.repo.query.total_time", unit: {:native, :millisecond}),
       summary("wmhub.repo.query.decode_time", unit: {:native, :millisecond}),
       summary("wmhub.repo.query.query_time", unit: {:native, :millisecond}),
@@ -37,7 +34,6 @@ defmodule WmhubWeb.Telemetry do
       counter("wmhub.payment.received.count", tags: [:payment_pointer]),
       counter("wmhub.payment.received.count", tags: [:request_id]),
 
-      # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       summary("vm.total_run_queue_lengths.total"),
       summary("vm.total_run_queue_lengths.cpu"),
@@ -46,10 +42,6 @@ defmodule WmhubWeb.Telemetry do
   end
 
   defp periodic_measurements do
-    [
-      # A module, function and arguments to be invoked periodically.
-      # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {WmhubWeb, :count_users, []}
-    ]
+    []
   end
 end

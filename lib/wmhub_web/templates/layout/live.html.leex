@@ -5,7 +5,7 @@
       <%= live_component @socket, WmhubWeb.SidebarComponent %>
     </div>
 
-    <div class="col s10">
+    <div class="col s11">
       <p class="alert alert-info" role="alert"
         phx-click="lv:clear-flash"
         phx-value-key="info"><%= live_flash(@flash, :info) %></p>

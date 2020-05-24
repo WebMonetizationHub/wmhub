@@ -32,7 +32,7 @@ defmodule Wmhub.Pointers do
   @doc """
   Gets a list of pointers for a project
   """
-  def pointers_for(project_id) do
+  def list(project_id) do
     Repo.all(from p in Pointer, where: p.project_id == ^project_id, select: p.payment_pointer)
   end
 end
