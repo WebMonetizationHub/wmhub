@@ -49,20 +49,23 @@ defmodule Wmhub.Payments do
         PubSub.broadcast!(PubSubServer, new_payment_topic_for(user_id), {:new_payment, payment})
     end
 
-    # FIXME: ** (Postgrex.Error) ERROR 42803 (grouping_error) column "p0.id" must appear in the GROUP BY clause or be used in an aggregate function
-    @doc false
-    def payments_for(user_id) do
+    @doc """
+    Returns the sum of payments for each project under the user_id account.
+    """
+    def sum_per_project(user_id) do
         query = payment_query()
-        Repo.all(
+        all = Repo.all(
             from [payment, project, user] in query,
             select: %{
                 project: project,
-                payment: payment,
                 sum: sum(payment.amount)
             },
             where: user.id == ^user_id,
-            group_by: [payment.request_id, project.id]
+            group_by: project.id
         )
+        Enum.map(all, fn %{sum: sum} = data ->
+            %{data | sum: (sum / :math.pow(10, 9))}
+        end)
     end
 
     @doc """

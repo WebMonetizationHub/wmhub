@@ -1,1 +1,4 @@
-<h2>Dashboard</h2>
+<%= for sum_payment <- @payments do %>
+    <h2><%= sum_payment.project.name %></h2>
+    <p>Total de pagamentos: $<%= Float.to_string(sum_payment.sum, decimals: 9) %></p>
+<% end %>
