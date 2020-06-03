@@ -43,7 +43,7 @@ defmodule WmhubWeb.MonetizationChannel do
       payment_pointer: payment_pointer,
       request_id: request_id,
       project_id: socket.assigns.project_id,
-      payment_date: DateTime.now!("Etc/UTC")
+      payment_date: DateTime.now("Etc/UTC")
     }
     save_payment!(payment)
     {:noreply, socket}

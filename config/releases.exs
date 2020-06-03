@@ -2,7 +2,7 @@
 # from environment variables. You can also hardcode secrets,
 # although such is generally not recommended and you have to
 # remember to add this file to your .gitignore.
-use Mix.Config
+import Config
 
 database_url =
   System.get_env("DATABASE_URL") ||
@@ -14,7 +14,8 @@ database_url =
 config :wmhub, Wmhub.Repo,
   # ssl: true,
   url: database_url,
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+  show_sensitive_data_on_connection_error: true
 
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") ||
@@ -35,7 +36,8 @@ config :wmhub, WmhubWeb.Endpoint,
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 #
-#     config :wmhub, WmhubWeb.Endpoint, server: true
+
+config :wmhub, WmhubWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
